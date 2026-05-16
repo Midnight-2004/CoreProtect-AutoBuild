@@ -64,11 +64,17 @@ jobs:
           echo "Required JAR files exist"
 
       # 发布文件（覆盖现有发行版）
-      - name: Auto Release
-        uses: marvinpinto/action-automatic-releases@latest
+      - name: Create or Update Release
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: latest-build
+          tag_name: latest-build
+          name: "Latest Build"
+          body: "Automated build of CoreProtect development version.\n\nLast updated: ${{ github.event.head_commit.timestamp || github.run_started_at }}\nBuild triggered by: ${{ github.event_name }}"
+          files: "./external-coreprotect/target/*.jar"
+          draft: false
           prerelease: false
-          title: "Latest Build"
-          files: ./external-coreprotect/target/*.jar
+          overwrite_files: true
+          append_body: false
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
