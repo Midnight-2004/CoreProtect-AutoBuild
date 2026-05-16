@@ -50,14 +50,6 @@ jobs:
         run: mvn -B verify
         working-directory: ./external-coreprotect
 
-      # 设置日期和短 SHA 作为标签名
-      - name: Set date and short sha as tag name
-        id: set_tag
-        run: |
-          DATE=$(date +'%y%m%d-%H%M')  # 修改日期格式为 yyMMdd-HHmm
-          echo "TAG_NAME=build-$DATE" >> $GITHUB_ENV  # 添加前缀 build-
-          echo "Generated Tag: ${{ env.TAG_NAME }}"
-
       # 构建后的验证步骤（精确检查两个文件）
       - name: Verify Artifacts
         run: |
@@ -71,11 +63,12 @@ jobs:
 
           echo "Required JAR files exist"
 
-      # 发布文件
+      # 发布文件（覆盖现有发行版）
       - name: Auto Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ env.TAG_NAME }}
+          automatic_release_tag: latest-build
           prerelease: false
+          title: "Latest Build"
           files: ./external-coreprotect/target/*.jar
