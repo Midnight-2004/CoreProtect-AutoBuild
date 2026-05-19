@@ -3,8 +3,6 @@ name: Build and Deploy
 on:
   schedule:
     - cron: '0 5 * * 0'  # 仅周日凌晨5点触发
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -32,14 +30,14 @@ jobs:
 
       # 设置 Java 环境
       - name: Set up JDK 25
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '25'
           distribution: 'temurin'
 
       # Maven 依赖缓存（路径与上游统一）
       - name: Cache Maven packages
-        uses: actions/cache@v4  # 升级到 v4
+        uses: actions/cache@v5
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('external-coreprotect/pom.xml') }}
