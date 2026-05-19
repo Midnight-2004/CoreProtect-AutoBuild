@@ -1,0 +1,73 @@
+name: Manually build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  manually_build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 发布所需的权限
+
+    steps:
+
+      # 克隆上游仓库（保持与上游同步的关键修改）
+      - name: Clone Upstream Repository
+        run: git clone --branch master https://github.com/PlayPro/CoreProtect ./external-coreprotect
+
+      # 修改上游的 pom.xml
+      - name: Patch pom.xml
+        working-directory: ./external-coreprotect
+        run: |
+          # 修改版本号和分支参数
+          sed -i '5s|<version>[^<]*</version>|<version>23.4-dev</version>|' pom.xml
+          sed -i '7s|<project.branch></project.branch>|<project.branch>development</project.branch>|' pom.xml
+          cat pom.xml  # 验证修改
+
+      # 修改上游的 ConfigHandler.java
+      - name: Edit ConfigHandler.java
+        working-directory: ./external-coreprotect/src/main/java/net/coreprotect/config/
+        run: |
+          sed -i 's/public static final String LATEST_VERSION = "26.1";/public static final String LATEST_VERSION = "26.1.2";/' ConfigHandler.java
+          cat ConfigHandler.java | grep LATEST_VERSION  # 验证修改
+
+      # 设置 Java 环境
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
+      # Maven 依赖缓存（路径与上游统一）
+      - name: Cache Maven packages
+        uses: actions/cache@v4  # 升级到 v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('external-coreprotect/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2-
+
+      # Maven 构建
+      - name: Build with Maven
+        run: mvn -B verify
+        working-directory: ./external-coreprotect
+
+      # 构建后的验证步骤（精确检查两个文件）
+      - name: Verify Artifacts
+        run: |
+          ls -la ./external-coreprotect/target/
+          
+          # 检查核心文件是否存在（泛匹配 CoreProtect-x.x.jar）
+          if ! ls ./external-coreprotect/target/CoreProtect-*.jar; then
+            echo "::error::CoreProtect-*.jar not found"
+            exit 1
+          fi
+
+          echo "Required JAR files exist"
+
+      # 上传构建完成的文件
+      - name: Upload JAR as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coreprotect-build
+          path: ./external-coreprotect/target/*.jar
+          if-no-files-found: error
