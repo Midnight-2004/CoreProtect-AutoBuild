@@ -1,14 +1,10 @@
-name: Build and Deploy
+name: Manually build
 
 on:
-  schedule:
-    - cron: '0 5 * * 0'  # 仅周日凌晨5点触发
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  manually_build:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # 发布所需的权限
@@ -27,6 +23,13 @@ jobs:
           sed -i '5s|<version>[^<]*</version>|<version>23.4-dev</version>|' pom.xml
           sed -i '7s|<project.branch></project.branch>|<project.branch>development</project.branch>|' pom.xml
           cat pom.xml  # 验证修改
+
+      # 修改上游的 ConfigHandler.java
+      - name: Edit ConfigHandler.java
+        working-directory: ./external-coreprotect/src/main/java/net/coreprotect/config/
+        run: |
+          sed -i 's/public static final String LATEST_VERSION = "26.1";/public static final String LATEST_VERSION = "26.1.2";/' ConfigHandler.java
+          cat ConfigHandler.java | grep LATEST_VERSION  # 验证修改
 
       # 设置 Java 环境
       - name: Set up JDK 25
@@ -61,18 +64,10 @@ jobs:
 
           echo "Required JAR files exist"
 
-      # 发布文件（覆盖现有发行版）
-      - name: Create or Update Release
-        uses: softprops/action-gh-release@v2
+      # 上传构建完成的文件
+      - name: Upload JAR as artifact
+        uses: actions/upload-artifact@v7
         with:
-          tag_name: latest-build
-          name: "Latest Build"
-          body: "Automated build of CoreProtect development version.\n\nLast updated: ${{ github.event.head_commit.timestamp || github.run_started_at }}\nBuild triggered by: ${{ github.event_name }}"
-          files: "./external-coreprotect/target/*.jar"
-          draft: false
-          prerelease: false
-          overwrite_files: true
-          append_body: false
-          make_latest: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: coreprotect-build
+          path: ./external-coreprotect/target/*.jar
+          if-no-files-found: error

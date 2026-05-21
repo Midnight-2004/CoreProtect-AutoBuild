@@ -14,6 +14,13 @@
 
 ## 注意事项
 
+> [!IMPORTANT]
+> 如需下载支持 MC 26.1.2 的版本，请在[发行版](https://github.com/Midnight-2004/CoreProtect-AutoBuild/releases/)页面上寻找最新的预发行版。
+> 目前这些支持 26.1.2 版本的插件不会放在每周自动构建的版本内。
+>
+>To download a version supporting MC 26.1.2, please find the latest pre-release version on the [Releases](https://github.com/Midnight-2004/CoreProtect-AutoBuild/releases/) page.
+>Currently, these plugins supporting version 26.1.2 will not be included in the weekly automatic build.
+
 本仓库构建的 CoreProtect 为 `development` 版本。根据 SpigotMC 及 Discord 上其他用户的反馈，**手动拉取仓库构建的这些版本**无法使用`22.4`及之前版本的数据库，因此你需要删除原来的数据库才能继续使用这些版本的插件。
 
 提示：
