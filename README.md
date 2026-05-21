@@ -1,5 +1,7 @@
 # CoreProtect-AutoBuild
 
+[English](README_EN.md) | 简体中文
+
 [![Build and Deploy](https://github.com/Midnight-2004/CoreProtect-AutoBuild/actions/workflows/build.yml/badge.svg)](https://github.com/Midnight-2004/CoreProtect-AutoBuild/actions/workflows/build.yml)
 
 每周日自动拉取并构建一次CoreProtect。
