@@ -20,7 +20,7 @@ jobs:
         working-directory: ./external-coreprotect
         run: |
           # 修改版本号和分支参数
-          sed -i '5s|<version>[^<]*</version>|<version>23.4-dev</version>|' pom.xml
+          sed -i '5s|<version>[^<]*</version>|<version>24.0.1-dev</version>|' pom.xml
           sed -i '7s|<project.branch></project.branch>|<project.branch>development</project.branch>|' pom.xml
           cat pom.xml  # 验证修改
 
