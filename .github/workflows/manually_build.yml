@@ -28,7 +28,7 @@ jobs:
       - name: Edit ConfigHandler.java
         working-directory: ./external-coreprotect/src/main/java/net/coreprotect/config/
         run: |
-          sed -i 's/public static final String LATEST_VERSION = "26.1";/public static final String LATEST_VERSION = "26.1.2";/' ConfigHandler.java
+          sed -i 's/public static final String LATEST_VERSION = "[0-9.]\+";/public static final String LATEST_VERSION = "26.2";/' ConfigHandler.java
           cat ConfigHandler.java | grep LATEST_VERSION  # 验证修改
 
       # 设置 Java 环境
