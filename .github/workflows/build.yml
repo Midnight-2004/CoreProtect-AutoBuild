@@ -61,13 +61,16 @@ jobs:
 
           echo "Required JAR files exist"
 
-      # 发布文件（覆盖现有发行版）
+      - name: Get current time
+        id: time
+        run: echo "timestamp=$(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+
       - name: Create or Update Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest-build
           name: "Latest Build"
-          body: "Automated build of CoreProtect development version.\n\nLast updated: ${{ github.event.head_commit.timestamp || github.run_started_at }}\nBuild triggered by: ${{ github.event_name }}"
+          body: "CoreProtect开发版本的自动构建。\nAutomated build of CoreProtect development version.\n\nLast updated: ${{ steps.time.outputs.timestamp }}\nBuild triggered by: ${{ github.event_name }}"
           files: "./external-coreprotect/target/*.jar"
           draft: false
           prerelease: false
