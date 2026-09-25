@@ -15,7 +15,7 @@
 ## 注意事项
 
 > [!IMPORTANT]
->上游仓库已添加对 MC 26.2 的支持，本仓库的预发行版将暂停构建，直接下载[最新发行版](https://github.com/Midnight-2004/CoreProtect-AutoBuild/releases/latest)即可。
+>上游仓库已添加对 MC 26.3 的支持，本仓库的预发行版将暂停构建，直接下载[最新发行版](https://github.com/Midnight-2004/CoreProtect-AutoBuild/releases/latest)即可。
 >
 >The upstream repository has added support for MC 26.2. The pre-release version of this repository will be temporarily suspended from building. You can directly download the [latest release version](https://github.com/Midnight-2004/CoreProtect-AutoBuild/releases/latest).
 

@@ -15,7 +15,7 @@ Although the developers have not updated CoreProtect on SpigotMC or Modrinth pla
 ## Important Notes
 
 > [!IMPORTANT]
->The upstream repository has added support for MC 26.2. The pre-release version of this repository will be temporarily suspended from building. You can directly download the [latest release version](https://github.com/Midnight-2004/CoreProtect-AutoBuild/releases/latest).
+>The upstream repository has added support for MC 26.3. The pre-release version of this repository will be temporarily suspended from building. You can directly download the [latest release version](https://github.com/Midnight-2004/CoreProtect-AutoBuild/releases/latest).
 
 The CoreProtect builds from this repository are `development` versions. According to feedback from other users on SpigotMC and Discord, **these manually built versions** cannot use databases from version `22.4` and earlier, so you need to delete your original database to continue using these plugin versions.
 
